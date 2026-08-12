@@ -54,15 +54,16 @@ type (
 	}
 
 	TestCommandOptions struct {
-		Args                    []string
-		CloudClientExpectations func(cloudClient *cloudmock.MockCloudServiceClient)
-		AsyncPollerOptions      TestAsyncPollerOptions
-		PromptOptions           TestPromptOptions
-		EditorOptions           TestEditorOptions
-		JSONOutput              bool
-		ExpectedError           string
-		ExpectedOutput          string
-		ExpectedOutputJson      any
+		Args                           []string
+		CloudClientExpectations        func(cloudClient *cloudmock.MockCloudServiceClient)
+		AsyncPollerOptions             TestAsyncPollerOptions
+		PromptOptions                  TestPromptOptions
+		EditorOptions                  TestEditorOptions
+		JSONOutput                     bool
+		ExpectedError                  string
+		ExpectedOutput                 string
+		ExpectedOutputJson             any
+		ExpectedOutputJsonEmitDefaults bool
 	}
 )
 
@@ -199,7 +200,9 @@ func TestCommand(t *testing.T, command CommandIfc, opts TestCommandOptions) {
 			var js []byte
 			var err error
 			if protoMessage, ok := opts.ExpectedOutputJson.(proto.Message); ok {
-				js, err = protojson.Marshal(protoMessage)
+				js, err = protojson.MarshalOptions{
+					EmitDefaultValues: opts.ExpectedOutputJsonEmitDefaults,
+				}.Marshal(protoMessage)
 			} else {
 				js, err = json.Marshal(opts.ExpectedOutputJson)
 			}
