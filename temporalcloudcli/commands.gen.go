@@ -24,7 +24,7 @@ type ClientOptions struct {
 
 func (v *ClientOptions) BuildFlags(f *pflag.FlagSet) {
 	v.FlagSet = f
-	f.StringVar(&v.ApiKey, "api-key", "", "API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines.")
+	f.StringVar(&v.ApiKey, "api-key", "", "API key for authenticating with Temporal Cloud. Can be used instead of interactive login for automation and CI/CD pipelines. Env: TEMPORAL_API_KEY.")
 	f.StringVar(&v.Server, "server", "saas-api.tmprl.cloud:443", "Override the Temporal Cloud API server address. Used for connecting to non-production environments.")
 	_ = f.MarkHidden("server")
 }

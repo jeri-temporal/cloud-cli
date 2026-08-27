@@ -5,8 +5,11 @@ before:
     - go mod download
 
 release:
+  preflight:
+    fail_on_error: true
   prerelease: auto
-  draft: false
+  draft: true
+  replace_existing_draft: true
   name_template: "v{{.Version}}"
 
 archives:
